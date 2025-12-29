@@ -1,6 +1,6 @@
 # dittoTones 🟣
 
-A mini-library to generate color palettes by blending the L/C curves of design system ramps (Tailwind, Radix, etc.) with your target hue.
+A mini-library to transform any color into a full palette, based on the perceptual "DNA" of any design system.
 
 Demo: https://meodai.github.io/dittoTones/
 
