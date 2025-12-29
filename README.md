@@ -8,33 +8,6 @@ Demo: https://meodai.github.io/dittoTones/
 
 Most palette generators for popular frameworks either match a single color or ignore the careful work that was put into creating the original palettes entirely. dittoTones takes a different approach: it analyzes the perceptual "DNA" (Lightness and Chroma curves in Oklch space) of popular design systems like Tailwind or Radix. It then maps your target hue onto these curves, ensuring your custom palette maintains similar accessible contrast ratios and vibrancy as the reference system.
 
-```text
-       Input Color
-           │
-           ▼
-   Find Neighbor Ramps
-           │
-    ┌──────┴──────┐
-    ▼             ▼
- Ramp A        Ramp B
- (Blue)        (Cyan)
-    │             │
-    ▼             ▼
- L/C Curve     L/C Curve
-    │             │
-    └──────┬──────┘
-           │
-           ▼
-     Blend Curves
-      (Weighted)
-           │
-           ▼
-       Apply Hue
-           │
-           ▼
-   Generated Palette
-```
-
 ## Install
 
 ```bash
@@ -131,6 +104,53 @@ npm run preview # Preview the demo build
 ## Notes
 
 - ESM-only package (`"type": "module"`).
+
+## Flowchart
+
+```text
+      Input Color
+           │
+           ▼
+     Parse to OKLCH
+           │
+           ▼
+   Is chroma very low?
+     ┌─────┴─────┐
+     ▼           ▼
+    yes          no
+     │           │
+     ▼           ▼
+ Use most     Find closest ramp
+ neutral      + matched shade
+ ramp             │
+     │            │
+     │            ▼
+     │   Is diff below threshold?
+     │       ┌────┴────┐
+     │       ▼         ▼
+     │      yes        no
+     │       │         │
+     │       ▼         ▼
+     │  Use single   Pick second ramp
+     │     ramp      (closest hue at
+     │               matched shade)
+     │                 │
+     │           ┌─────┴─────┐
+     │           ▼           ▼
+     │          none       found
+     │           │           │
+     │           ▼           ▼
+     │      Use single   Blend ramps
+     │         ramp      (weighted)
+     │           │           │
+     └──────┬────┴──────┬────┘
+            │           │
+            ▼           ▼
+      Rotate hue + correct L/C
+                 │
+                 ▼
+         Generated Palette
+```
 
 ## Credits
 
