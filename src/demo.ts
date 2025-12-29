@@ -21,7 +21,7 @@ const copyBtn = document.getElementById('copyBtn')!;
 const toast = document.getElementById('toast')!;
 
 const face = document.querySelector<HTMLElement>('[data-face]')!;
-const eyes = [' ͡°', '✿', '╹', 'T', '个', '≖', 'ꈍ', 'ʘ', '◕', '•', 'ಠ', '눈', '◉', '◔', 'Φ', '⊙', '⨀', '☉', 'σ', 'ф', '￣', '✧'] as const;
+const eyes = ['✿', '╹', 'T', '个', '≖', 'ꈍ', 'ʘ', '◕', '•', 'ಠ', '눈', '◉', '◔', 'Φ', '⊙', '⨀', '☉', 'σ', 'ф', '￣', '✧'] as const;
 const mouths = ['ʖ̯ ','ٹ','〇','θ','ᴥ', 'ゝ', 'з','ᴗ', '‿', '_', 'ω', '▽', '△', '෴', 'o', '.', '﹏', 'ᆺ', 'ロ','Д', '︿', '～', '∀', '_ʖ', '(ｴ)'] as const;
 const cheeks = ['♪','˘', '˚', '•', '♥', '?'] as const;
 
