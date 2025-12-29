@@ -8,6 +8,34 @@ Demo: https://meodai.github.io/dittoTones/
 
 Most palette generators for popular frameworks either match a single color or ignore the careful work that was put into creating the original palettes entirely. dittoTones takes a different approach: it analyzes the perceptual "DNA" (Lightness and Chroma curves in Oklch space) of popular design systems like Tailwind or Radix. It then maps your target hue onto these curves, ensuring your custom palette maintains similar accessible contrast ratios and vibrancy as the reference system.
 
+```text
+       Input Color
+           │
+           ▼
+   1. Find Neighbors
+      (in Oklch)
+           │
+    ┌──────┴──────┐
+    ▼             ▼
+ Ramp A        Ramp B
+ (Blue)        (Cyan)
+    │             │
+    ▼             ▼
+ L/C Curve     L/C Curve
+    │             │
+    └──────┬──────┘
+           │
+           ▼
+   2. Blend Curves
+      (Weighted)
+           │
+           ▼
+    3. Apply Hue
+           │
+           ▼
+   Generated Palette
+```
+
 ## Install
 
 ```bash
