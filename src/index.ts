@@ -121,11 +121,18 @@ export class DittoTones {
     const ramp = this.ramps.get(rampName)!;
     const shade = this.findClosestShadeInRamp(parsed, ramp);
 
-    // For neutrals, just use the ramp as-is without L/C correction
+    // For neutrals, preserve any hue tint from the input
+    const targetHue = parsed.h ?? 0;
     const scale: Record<string, Oklch> = {};
     for (const [s, color] of Object.entries(ramp)) {
       if (!color) continue;
-      scale[s] = { ...color };
+      // Apply the input's hue to the neutral ramp
+      scale[s] = { 
+        mode: 'oklch',
+        l: color.l,
+        c: color.c ?? 0,
+        h: targetHue
+      };
     }
 
     // Force exact match for the closest shade
