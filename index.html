@@ -227,7 +227,7 @@
       .blend-viz {
         display: flex;
         flex-direction: column;
-        gap: 0;
+        gap: 0.5rem;
         margin-top: 2rem;
       }
       .ramp-row {
@@ -249,7 +249,7 @@
       }
       .ramp-bar {
         flex: 1;
-        height: 36px;
+        height: 2rem;
         display: flex;
       }
       .ramp-bar .shade-block {
@@ -264,11 +264,16 @@
         z-index: 1;
         transform: scale(1.1);
       }
-      .blend-indicator {
-        margin-left: 116px;
-        height: 48px;
-        position: relative;
-        z-index: 2;
+      .blend-palette-row {
+        min-height: 2rem;
+      }
+      .blend-palette-bar {
+        height: auto;
+      }
+      .blend-palette-bar .shade {
+        flex: 1;
+        padding-top: 3.25rem;
+        height: 2rem;
       }
 
       .section {

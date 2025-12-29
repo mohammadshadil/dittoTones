@@ -25,6 +25,8 @@ const eyes = ['ꈍ', 'ʘ', '◕', '•', 'ಠ', '눈', '◉', '◔', 'Φ', '⊙'
 const mouths = ['ᴗ', '‿', '_', 'ω', '▽', '△', '෴', 'o', '.', '﹏', 'ᆺ'] as const;
 const cheeks = ['˘', '˚', '•', '♥'] as const;
 
+type Eye = (typeof eyes)[number];
+
 const CHEEK_PROB = 0.05;
 const MISMATCH_EYE_PROB = 0.05;
 
@@ -33,14 +35,14 @@ function pickOne<T>(arr: readonly T[]): T {
 }
 
 
-function pickDifferentEye(exclude: string): string {
-  const options = eyes.filter((e) => e !== exclude);
+function pickDifferentEye(exclude: Eye): Eye {
+  const options = eyes.filter((e): e is Eye => e !== exclude);
   return pickOne(options);
 }
 
 function buildFace(): string {
-  let leftEye = pickOne(eyes);
-  let rightEye = leftEye;
+  let leftEye: Eye = pickOne(eyes);
+  let rightEye: Eye = leftEye;
 
   // Very rare: one eye differs
   if (Math.random() < MISMATCH_EYE_PROB) {
@@ -122,15 +124,60 @@ function renderRampBar(rampName: string, matchedShade: string): string {
     .join('');
 }
 
-function renderBlendViz(result: ReturnType<typeof ditto.generate>, inputColor: string) {
+function getPaletteNameFromTitle(title: string | null | undefined): string {
+  const raw = (title || '').trim();
+  if (!raw) return 'Palette';
+
+  const prefix = 'Generated Palette:';
+  if (raw.startsWith(prefix)) {
+    const name = raw.slice(prefix.length).trim();
+    return name || 'Palette';
+  }
+
+  if (raw === 'Generated Palette') return 'Palette';
+  return raw;
+}
+
+function renderBlendViz(result: ReturnType<typeof ditto.generate>) {
   blendViz.innerHTML = '';
   const shades = getShades();
-  const shadeIndex = shades.indexOf(result.matchedShade);
-  const shadeX = ((shadeIndex + 0.5) / shades.length) * 100;
+
+  const paletteRow = document.createElement('div');
+  paletteRow.className = 'ramp-row blend-palette-row';
+
+  const paletteLabel = document.createElement('div');
+  paletteLabel.className = 'ramp-label';
+
+  const paletteBar = document.createElement('div');
+  paletteBar.className = 'ramp-bar blend-palette-bar';
+
+  paletteLabel.textContent = result.method === 'exact' ? '' : getPaletteNameFromTitle(paletteTitle.textContent);
+
+  for (const shade of shades) {
+    const oklchColor = result.scale[shade];
+    if (!oklchColor) continue;
+
+    const hex = formatHex(oklchColor) || '#000';
+    const css = formatCss(oklchColor) || '';
+
+    const div = document.createElement('div');
+    div.className = `shade ${isLightColor(hex) ? 'dark-text' : 'light-text'}`;
+    if (shade === result.matchedShade) div.classList.add('matched');
+    div.style.background = hex;
+    div.innerHTML = `<div class="shade__label"><span class="shade-key">${shade}</span><span class="shade-value">${hex}</span></div>`;
+    div.title = `Click to copy ${css}`;
+    div.addEventListener('click', () => {
+      navigator.clipboard.writeText(css);
+      showToast(`Copied ${css}`);
+    });
+    paletteBar.appendChild(div);
+  }
+
+  paletteRow.appendChild(paletteLabel);
+  paletteRow.appendChild(paletteBar);
 
   if (result.method === 'blend' && result.sources.length === 2) {
     const [src1, src2] = result.sources;
-    const t = src2.weight;
 
     const row1 = document.createElement('div');
     row1.className = 'ramp-row';
@@ -140,17 +187,7 @@ function renderBlendViz(result: ReturnType<typeof ditto.generate>, inputColor: s
     `;
     blendViz.appendChild(row1);
 
-    const indicator = document.createElement('div');
-    indicator.className = 'blend-indicator';
-    const yPos = t * 100;
-    indicator.innerHTML = `
-      <svg width="100%" height="48">
-        <line x1="${shadeX}%" y1="0" x2="${shadeX}%" y2="48" stroke="var(--c-text-alt)" stroke-width="1" stroke-dasharray="3,3"/>
-        <circle cx="${shadeX}%" cy="${yPos * 0.48}" r="10" fill="${inputColor}" stroke="var(--c-text-alt)" stroke-width="1"/>
-        <text x="${shadeX}%" y="${yPos * 0.48}" text-anchor="middle" dominant-baseline="central" fill="${isLightColor(inputColor) ? '#18181b' : '#fafafa'}" font-size="7" font-weight="600">${t.toFixed(2)}</text>
-      </svg>
-    `;
-    blendViz.appendChild(indicator);
+    blendViz.appendChild(paletteRow);
 
     const row2 = document.createElement('div');
     row2.className = 'ramp-row';
@@ -169,16 +206,7 @@ function renderBlendViz(result: ReturnType<typeof ditto.generate>, inputColor: s
     `;
     blendViz.appendChild(row);
 
-    const indicator = document.createElement('div');
-    indicator.className = 'blend-indicator';
-    indicator.style.height = '84px';
-    indicator.innerHTML = `
-      <svg width="100%" height="28">
-        <line x1="${shadeX}%" y1="0" x2="${shadeX}%" y2="14" stroke="var(--c-text-alt)" stroke-width="1"/>
-        <circle cx="${shadeX}%" cy="20" r="8" fill="${inputColor}" stroke="var(--c-text-alt)" stroke-width="1"/>
-      </svg>
-    `;
-    blendViz.appendChild(indicator);
+    blendViz.appendChild(paletteRow);
   }
 }
 
@@ -190,6 +218,7 @@ function sanitizeName(name: string): string {
 }
 
 let nameFetchTimeout: any;
+let lastResult: ReturnType<typeof ditto.generate> | null = null;
 
 async function fetchAndApplyName(result: ReturnType<typeof ditto.generate>) {
   try {
@@ -210,6 +239,8 @@ async function fetchAndApplyName(result: ReturnType<typeof ditto.generate>) {
       const safeName = sanitizeName(name);
       paletteTitle.textContent = `Generated Palette: ${name}`;
       cssOutput.textContent = toCSS(result, safeName);
+
+      if (lastResult) renderBlendViz(lastResult);
     }
   } catch (e) {
     console.error('Failed to fetch color name', e);
@@ -219,6 +250,7 @@ async function fetchAndApplyName(result: ReturnType<typeof ditto.generate>) {
 function updatePalette(color: string) {
   try {
     const result = ditto.generate(color);
+    lastResult = result;
     const shades = getShades();
 
     methodBadge.textContent = result.method;
@@ -232,7 +264,7 @@ function updatePalette(color: string) {
         )
         .join(' + ') + ` @ shade <strong>${result.matchedShade}</strong>`;
 
-    renderBlendViz(result, color);
+    renderBlendViz(result);
 
     // Update grid columns based on shade count
     paletteGrid.style.gridTemplateColumns = `repeat(${shades.length}, 1fr)`;
