@@ -56,6 +56,11 @@
         --s-inset: 8rem;
         line-height: 1.5;
         overflow-x: hidden;
+
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        
       }
 
       @media (prefers-color-scheme: light) {
@@ -152,7 +157,7 @@
           content: '';
           position: absolute;
           bottom: -.75rem;
-          width: 100vw;
+          width: 200vw;
           background: var(--c-text);
           left: 50%;
           transform: translateX(-50%);
@@ -323,6 +328,7 @@
         flex-shrink: 0;
         padding-right: 1rem;
         box-sizing: border-box;
+        line-height: 1.2;
       }
 
       @media (max-width: 600px) {
@@ -392,7 +398,11 @@
       }
       .palette-grid {
         display: grid;
-        gap: 0rem;
+        gap: 0.25rem;
+        .shade {
+          border: 2px solid var(--c-bg);
+          box-shadow: 0 0 0 .5px color-mix(in srgb, var(--c-text) 50%, transparent);
+        }
       }
       .shade {
         padding-top: calc(100% + 1.5rem);
@@ -440,19 +450,25 @@
       }
       .css-output {
         margin-top: 2rem;
-        background: #0a0a0a;
         margin-inline: -3rem;
         margin-top: -2.25rem;
         margin-bottom: -2rem;
         padding: 3rem;
         padding-bottom: 4.5rem; 
         font-size: 0.8rem;
-        color: #fff;
+        color: var(--c-text-alt);
         overflow-x: auto;
         white-space: pre;
         max-height: 300px;
         overflow-y: auto;
         font-family: var(--font-input);
+
+        border-bottom: 0.5px solid color-mix(in srgb, var(--c-text) 50%, transparent);
+
+        background-image: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--c-text), transparent 75%) 0% 35%, transparent 35% 100%);
+        background-repeat: repeat;
+        background-size: 3px 3px;
+
       }
       .toast {
         position: fixed;
@@ -506,8 +522,8 @@
       }
       .description {
         max-width: 50ch;
-        margin-top: 2em;
-        margin-bottom: 2rem;
+        margin-top: 3em;
+        margin-bottom: 4rem;
         line-height: 1.5;
         margin-left: var(--s-inset);
       }
