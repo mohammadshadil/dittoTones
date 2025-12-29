@@ -1,9 +1,10 @@
 import { DittoTones } from './index';
 import { tailwindRamps } from './ramps/tailwind';
+import { tailwindV3Ramps } from './ramps/tailwind-v3';
 import { radixRamps } from './ramps/radix';
 import { formatCss, formatHex, type Oklch } from 'culori';
 
-type RampSet = 'tailwind' | 'radix';
+type RampSet = 'tailwind' | 'tailwind-v3' | 'radix';
 
 let currentRampSet: RampSet = 'tailwind';
 let ditto = new DittoTones({ ramps: tailwindRamps });
@@ -69,13 +70,15 @@ document.addEventListener('click', () => {
 });
 
 function getShades(): string[] {
-  return currentRampSet === 'tailwind'
-    ? ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', '950']
-    : ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+  return currentRampSet === 'radix'
+    ? ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+    : ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', '950'];
 }
 
 function getCurrentRamps(): Map<string, Record<string, Oklch>> {
-  return currentRampSet === 'tailwind' ? tailwindRamps : radixRamps;
+  if (currentRampSet === 'tailwind') return tailwindRamps;
+  if (currentRampSet === 'tailwind-v3') return tailwindV3Ramps;
+  return radixRamps;
 }
 
 function isLightColor(hex: string) {
