@@ -43,7 +43,7 @@
         --c-purple: #a855f7;
         --c-black: #202126;
         --c-grey: #a1a1a1;
-        --c-white: #fafafa;
+        --c-white: #f4f4f8;
         --c-red: tomato;
         --c-green: rgb(67, 164, 133);
 
@@ -55,6 +55,7 @@
 
         --s-inset: 8rem;
         line-height: 1.5;
+        overflow-x: hidden;
       }
 
       @media (prefers-color-scheme: light) {
@@ -143,6 +144,42 @@
         color: var(--c-text-alt);
         letter-spacing: -0.025em;
       }
+      h1, h2 {
+        position: relative;
+
+        &::after {
+          height: 0.5px;
+          content: '';
+          position: absolute;
+          bottom: -.75rem;
+          width: 100vw;
+          background: var(--c-text);
+          left: 50%;
+          transform: translateX(-50%);
+          opacity: 0.5;
+        }
+      }
+      .container {
+        position: relative;
+        &::after,
+        &::before {
+          content: '';
+          position: absolute;
+
+          width: 0.5px;
+          top: calc(-1 * max(15vmin, 2rem));
+          bottom: calc(-1 * max(15vmin, 2rem));
+          opacity: 0.5;
+          background: var(--c-text);
+        }
+
+        &::after {
+          right: -3rem;
+        }
+        &::before {
+          left: -3rem;
+        }
+      }
       .subtitle {
         margin-bottom: 2rem;
         max-width: 45ch;
@@ -158,6 +195,13 @@
         align-items: center;
         gap: 1.5rem;
         flex-wrap: wrap;
+        border-top: 0.5px solid color-mix(in srgb, var(--c-text) 50%, transparent);
+        border-bottom: 0.5px solid color-mix(in srgb, var(--c-text) 50%, transparent);
+        padding: 1.5rem 3rem;
+        margin-left: -3rem;
+        margin-right: -3rem;
+        box-sizing: border-box;
+        
       }
       .color-input-wrapper {
         display: flex;
@@ -241,6 +285,12 @@
 
       .blend-section {
         margin-top: 4rem;
+      }
+      .section__tools {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: -1.5rem
       }
       .section__title {
         font-size: 1.5rem;
@@ -505,11 +555,10 @@
       <div class="section">
         <div class="palette-header">
           <h2 class="section__title" id="paletteTitle">Generated Palette</h2>
-          <div style="display: flex; gap: 0.5rem; align-items: center">
+          <div class="section__tools">
             <select
               id="formatSelector"
               class="ramp-selector"
-              style="padding: 0.5rem 0.75rem; font-size: 0.875rem"
             >
               <option value="oklch">oklch</option>
               <option value="oklab">oklab</option>
