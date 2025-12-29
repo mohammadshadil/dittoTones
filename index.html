@@ -401,9 +401,19 @@
       .palette-grid {
         display: grid;
         gap: 0.25rem;
+
         .shade {
+          position: relative;
           border: 2px solid var(--c-bg);
           box-shadow: 0 0 0 .5px color-mix(in srgb, var(--c-text) 50%, transparent);
+          
+          &.matched {
+            box-shadow: 0 0 .5px color-mix(in srgb, var(--c-text) 50%, transparent), 
+                        0 0 0 3px var(--c-bg),
+                        0 0 0 3.5px color-mix(in srgb, var(--c-hightlight) 30%, transparent),
+                        0 0 1rem var(--cc);
+          
+          }
         }
       }
       .shade {
@@ -452,7 +462,7 @@
       .shade.matched .shade-key {
         &::after {
           content: '◆';
-          font-size: 0.5em;
+          font-size: 0.6em;
         }
       }
       .css-output {
