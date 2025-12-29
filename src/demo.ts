@@ -300,6 +300,7 @@ colorPicker.addEventListener('input', (e) => {
   const color = (e.target as HTMLInputElement).value;
   hexInput.value = color.toUpperCase();
   updatePalette(color);
+  setRandomFace();
 });
 
 hexInput.addEventListener('input', (e) => {
@@ -308,6 +309,7 @@ hexInput.addEventListener('input', (e) => {
   if (/^#[0-9A-Fa-f]{6}$/.test(value)) {
     colorPicker.value = value;
     updatePalette(value);
+    setRandomFace();
   }
 });
 
