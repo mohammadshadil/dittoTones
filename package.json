@@ -5,7 +5,7 @@
   "description": "Transform any color into a full palette by copying the perceptual DNA of Tailwind, Radix, and other design systems",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --emitDeclarationOnly --declaration --outDir dist && vite build",
+    "build": "vite build && tsc --emitDeclarationOnly --declaration --noEmit false --outDir dist",
     "build:demo": "vite build --config vite.demo.config.ts",
     "preview": "vite preview --config vite.demo.config.ts --outDir dist-demo"
   },
